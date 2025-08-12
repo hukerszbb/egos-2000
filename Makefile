@@ -1,18 +1,18 @@
 # (C) 2024, Cornell University
 # All rights reserved.
 
-QEMU        = qemu-system-riscv32
-RISCV_CC    = riscv-none-elf-gcc
+QEMU        = qemu-system-riscv64
+RISCV_CC    = riscv64-unknown-elf-gcc
 OBJDUMP     = riscv-none-elf-objdump
 OBJCOPY     = riscv-none-elf-objcopy
 
 LDFLAGS     = -nostdlib -lc -lgcc
-CFLAGS      = -march=rv32ima_zicsr -mabi=ilp32 -Wl,--gc-sections -ffunction-sections -fdata-sections -fdiagnostics-show-option -fno-builtin
+CFLAGS      = -march=rv64ima_zicsr -mabi=lp64 -Wl,--gc-sections -ffunction-sections -fdata-sections -fdiagnostics-show-option -fno-builtin
 DEBUG_FLAGS = --source --all-headers --demangle --line-numbers --wide
 
 all:
 	@printf "$(YELLOW)-------- Compile Hello, World! --------$(END)\n"
-	$(RISCV_CC) $(CFLAGS) hello.s hello.c -Thello.lds $(LDFLAGS) -o hello.elf
+	$(RISCV_CC) $(CFLAGS) hello.s hello.adb -Thello.lds $(LDFLAGS) -o hello.elf
 	$(OBJDUMP) $(DEBUG_FLAGS) hello.elf > hello.lst
 	$(OBJCOPY) -O binary hello.elf hello.bin
 
